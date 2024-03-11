@@ -22,9 +22,10 @@ model User {
 
 model Categories{
   id      Int      @id @default(autoincrement())
+  code String
   name String
-  createdAt DateTime
-  updateAt DateTime
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
   products   Products[]
 }
 
@@ -34,8 +35,10 @@ model Products{
   name String
   category   Categories @relation(fields: [categoryId], references: [id])
   categoryId Int 
+  price Int
+  image String
   createdAt DateTime @default(now())
-  updateAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
 }
 
 
