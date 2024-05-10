@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
+const {validationResult} = require('express-validator');
 const prisma = new PrismaClient();
 
 const Categories = async (req, res) => {
@@ -12,6 +13,10 @@ const Categories = async (req, res) => {
     }
 };
 const createCategory = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    res.status(422).json({errors: errors.array()})
+  }
   const { code, name } = req.body ;
   // res.json(code)
   try {

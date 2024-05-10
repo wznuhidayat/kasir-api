@@ -17,6 +17,7 @@ model User {
   email   String   @unique
   name    String?
   password    String
+  sales  Sales[]  @relation("admin")
   images String?
 }
 
@@ -35,8 +36,36 @@ model Products{
   name String
   category   Categories @relation(fields: [categoryId], references: [id])
   categoryId Int 
+  datailSales  DetailSales[]  @relation("productHasDetailSales")
   price Int
   image String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
+}
+
+model Sales{
+  id      Int      @id @default(autoincrement())
+  code   String   @unique
+  dtTransaction DateTime @default(now())
+  totalTransaction Int 
+  paymentMethod String
+  discount Float?
+  amountPay Int
+  admin      User    @relation("admin", fields: [adminId], references: [id])
+  adminId    Int
+  detailTransactions  DetailSales[]  @relation("transctionHasDetail")
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
+}
+
+model DetailSales{
+  id      Int      @id @default(autoincrement())
+  product Products @relation("productHasDetailSales",fields: [productInt], references: [id])
+  productInt Int
+  price Int
+  qty Int
+  transaction Sales @relation("transctionHasDetail",fields: [transactionId], references: [id])
+  transactionId Int
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt 
 }
