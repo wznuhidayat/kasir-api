@@ -5,6 +5,7 @@ const { getUser, Register, Login, Logout } = require('../controller/UserControll
 const { Categories, createCategory, deleteCategory } = require('../controller/CategoriesController.js');
 const { Products, createProduct, deleteProduct }  = require('../controller/ProductsControllers.js');
 const { storeSales }  = require('../controller/SalesController.js');
+const { HistoryOrder, detailOrder }  = require('../controller/HistoryOrderController.js');
 const { isAuthenticated } = require('../middlewares/Authenticate.js');
 const { uploadProduct } = require('../storage/FileStorage.js');
 const { loginValidator } = require('../validators/UserValidatior.js');
@@ -31,9 +32,13 @@ router.get("/categories",isAuthenticated,Categories);
 router.post("/categories",isAuthenticated,CategoryValidate,createCategory);
 router.delete("/categories/:id",isAuthenticated,deleteCategory);
 //PRODUCTS
-router.get("/products",Products);
-router.post("/products",uploadProduct, createProduct);
-router.delete("/products/:id",deleteProduct);
+router.get("/products",isAuthenticated,Products);
+router.post("/products",isAuthenticated,uploadProduct, createProduct);
+router.delete("/products/:id",isAuthenticated,deleteProduct);
 //POS
-router.post("/storeSales",storeSales);
+router.post("/storeSales",isAuthenticated,storeSales);
+//HISTORY ODER
+router.get('/historyOrder',isAuthenticated,HistoryOrder);
+router.post("/detailOrder",detailOrder);
+
 module.exports = router;
